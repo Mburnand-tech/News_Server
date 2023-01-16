@@ -22,7 +22,7 @@ module.exports = [
   },
   {
     body: " I carry a log — yes. Is it funny to you? It is not to me.",
-    votes: -100,
+    votes: 100,
     author: "icellusedkars",
     article_id: 1,
     created_at: 1582459260000,
