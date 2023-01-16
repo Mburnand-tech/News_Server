@@ -6,4 +6,6 @@ const runSeed = () => {
   return seed(devData).then(() => db.end());
 };
 
+console.log('Seeding happened')
+
 runSeed();
