@@ -2,25 +2,39 @@ const { response, request } = require('express')
 const express = require('express')
 const app = express()
 
-const { newsTopics , newsArticles } = require("../controllers/news.controllers")
+const { newsTopics , newsArticles , specficNewsArticle } = require("../controllers/news.controllers")
 
 
 app.get('/api/topics', newsTopics)
 app.get('/api/articles', newsArticles)
-app.get('/api/*', (request, response) => {
-    response.status(404).send({msg: 'Not a valid endpoint'})
-    /*
-    From comment: https://github.com/Mburnand-tech/News_Server/pull/1#discussion_r1071382866
-    Is this what you meant? 
-    Is it correct logic: because it will sit furthest down the page it is conditional logic for anyting else that isn't satisfied before it.
-    Why would we not handle this like an error? Where we send off the query, the query has an error which we then pass back down the error handling chain to be dealt with.   
-    */
-})
+app.get(`/api/articles/:article_id`, specficNewsArticle)
 
 app.use((err, request, response, next) => {
-    console.log(err)
-    response.send(err)
+    //This is my PSQL error handler
+    const errorHandler = 'PSQL'
+    if (err.code === '22P02'){
+        response.status(400).send({status: err.status , from: errorHandler ,msg: '22P02: invalid_text_representation from Matt'})
+    } else {
+        next(err)
+    }
 })
+
+
+app.use((err, request, response, next) => {
+    //This is my custom error handler
+    const errorHandler = 'Express'
+    if (err.status === 404){
+        response.status(404).send({status: err.status , from: errorHandler , msg: '22P02: invalid_text_representation from Matt'})
+    }
+})
+
+
+
+app.get('/api/*', (request, response) => {
+    response.status(404).send({msg: 'Not a valid endpoint'})
+})
+
+
 
 
 module.exports = {

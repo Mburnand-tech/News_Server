@@ -15,11 +15,27 @@ const allArticles = () => {
                 JOIN comments
                 ON articles.article_id = comments.article_id
                 ORDER BY article_id DESC`).then((response)=> {                    
-                    
                     return commentCounter(response)
-                    }
-                )
+                })
 }
+
+const findArticle = (article_id) => {
+    const query = `SELECT * FROM articles
+                    WHERE article_id = $1;`
+    return db.query(query, [article_id]).then(({rowCount , rows})=> {
+        if (rowCount === 0){
+            return Promise.reject({status:404, msg: 'Resource does not exist'})
+        } 
+        else {
+            return rows
+        }
+    })
+}
+
+
+
+
+
 
 const commentCounter = (queryData) => {
     let commentTemplate = {}
@@ -39,11 +55,15 @@ const commentCounter = (queryData) => {
             }
         })
     })
-    console.log(data)
+    //console.log(data)
     return data
     }
+
+
+
 
 module.exports = {
     allTopics,
     allArticles,
+    findArticle,
 }
