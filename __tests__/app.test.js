@@ -89,3 +89,26 @@ describe('GET requests', () => {
 
 });
 
+describe('POST requests', () => {
+    test.only('/api/articles/:article_id/comments: should return the posted comment', () => {
+        return request(app).post('/api/articles/9/comments')
+        .send({
+            username : 'MattyB',
+            body : 'What an interesting post ... Not!'
+        })
+        .expect(201)
+        .then(({ body }) => {
+                        
+            expect(body.username).toBe('MattyB')
+            expect(body.body).toBe('What an interesting post ... Not!')
+
+            expect(body).toHaveProperty('body')
+            expect(body).toHaveProperty('votes')
+            expect(body).toHaveProperty('author')
+            expect(body).toHaveProperty('article_id')
+            expect(body).toHaveProperty('created_at')
+        })
+
+    });
+});
+
