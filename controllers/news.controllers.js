@@ -28,12 +28,8 @@ const specficNewsArticle = (request, response, next) => {
 
 
 
-
-
-
 module.exports = {
     newsTopics,
     newsArticles,
     specficNewsArticle,
-    
 }

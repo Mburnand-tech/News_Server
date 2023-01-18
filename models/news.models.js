@@ -2,6 +2,7 @@ const endPoints = require('../endpoints.json')
 const db = require('../db/connection')
 
 
+
 const allTopics = () => {
     return db.query('SELECT * FROM topics;').then((response)=> {
         return response.rows

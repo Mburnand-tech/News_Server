@@ -5,9 +5,11 @@ const app = express()
 const { newsTopics , newsArticles , specficNewsArticle } = require("../controllers/news.controllers")
 
 
+
 app.get('/api/topics', newsTopics)
 app.get('/api/articles', newsArticles)
 app.get(`/api/articles/:article_id`, specficNewsArticle)
+
 
 
 app.use((err, request, response, next) => {
@@ -24,8 +26,7 @@ app.use((err, request, response, next) => {
 app.use((err, request, response, next) => {
     //This is my custom error handler
     const errorHandler = 'Express'
-    if (err.status === 404){
-        
+    if (err.status === 404){      
         response.status(404).send(err)
     }
 })
