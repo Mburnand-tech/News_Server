@@ -39,7 +39,7 @@ describe('GET requests', () => {
         return request(app).get('/api/articles')
         .expect(200)
         .then(( { body }) => {
-            console.log(body)
+            
             expect(body.length).toBe(12)
 
             body.forEach((element) => {
