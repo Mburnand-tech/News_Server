@@ -40,7 +40,7 @@ const newComment = (request, response, next) => {
         response.status(201).send(comment)
     })
     .catch(next)   
-
+}
   
 const allCommentsById = (request, response, next) => {
     const { article_id } = request.params

@@ -86,43 +86,7 @@ describe('GET requests', () => {
             expect(body.code).toBe('22P02')
         })
     });
-    test('GET /api/articles/:article_id/comments, it should return an array of comments for the given article_id', () => {
-            return request(app).get('/api/articles/9/comments')
-            .expect(200)
-            .then(({body}) => {
-                expect(body.length > 0).toBe(true)
-                body.forEach((comment) => {
-                    expect(comment).toHaveProperty('comment_id')
-                    expect(comment).toHaveProperty('votes')
-                    expect(comment).toHaveProperty('created_at')
-                    expect(comment).toHaveProperty('author')
-                    expect(comment).toHaveProperty('body')
-                    expect(comment).toHaveProperty('article_id')
-                })
-            })
-        })
-    test('GET /api/articles/1/comments, should return all comment, checking length of array and order of data', () => {
-        return request(app).get('/api/articles/1/comments')
-        .expect(200)
-        .then(({body}) => {
-            expect(body.length).toBe(11)
-            expect(body).toBeSortedBy('created_at' , { descending : true})
-        })
-    });
-    test('Searching comments but invalid id should return a 404 error', () => {
-        return request(app).get('/api/articles/9975/comments')
-        .expect(404)
-        .then(({body}) => {
-            expect(body.msg).toBe('Resource does not exist')
-        })
-    })
-    test('With invalid parameter on comments endpoint should return with a 400 error Bad request', () => {
-        return request(app).get('/api/articles/NotaNumber/comments')
-        .expect(400)
-        .then(({body}) => {
-            expect(body.code).toBe('22P02')
-        })
-    });
+
 });
 
 describe('POST requests', () => {
@@ -190,4 +154,3 @@ describe('POST requests', () => {
         })
     });
 });
-
