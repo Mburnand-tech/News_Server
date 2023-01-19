@@ -86,7 +86,19 @@ describe('GET requests', () => {
             expect(body.code).toBe('22P02')
         })
     });
+    test('GET /api/users: should return an array of object with 3 properties', () => {
+        return request(app).get('/api/users')
+        .expect(200)
+        .then(({body}) => {
+            expect(body.length > 0).toBe(true)
 
+            body.forEach((user) => {
+                expect(user).toHaveProperty('username')
+                expect(user).toHaveProperty('name')
+                expect(user).toHaveProperty('avatar_url')
+            })
+        })
+    })    
 });
 
 describe('POST requests', () => {
@@ -157,7 +169,7 @@ describe('POST requests', () => {
 
 
 
-describe.only('PATCH requests', () => {
+describe('PATCH requests', () => {
     test('PATCH /api/articles/:article_id: Should update articles votes', () => {
         return request(app).patch('/api/articles/3')
         .send({
