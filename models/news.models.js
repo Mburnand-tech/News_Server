@@ -37,6 +37,24 @@ const findArticle = (article_id) => {
     })
 }
 
+const postComment = (comment, article_id) => {
+    if (!comment.username){
+        return Promise.reject({status:404, msg: "Please login or create an account to post"})
+    }
+    if (!comment.body){
+        return Promise.reject({status:404, msg: "Please provide content to post"})
+    }
+
+
+    return db.query(`INSERT INTO comments
+                    (body, author, article_id)
+                    VALUES
+                    ($1, $2, $3) RETURNING *;`, [comment.body, comment.username, article_id])
+                    .then(({rows}) => {
+                        return rows
+                    })
+}
+
 const commentsFromArticle = (article_id) => {
     
     return db.query(`SELECT * FROM comments
@@ -45,6 +63,7 @@ const commentsFromArticle = (article_id) => {
                         return rows
                     })
 }
+
 
 const changeVote = (article_id, voteUpdate) => {
     
@@ -66,11 +85,11 @@ const changeVote = (article_id, voteUpdate) => {
 }
 
 
-
 module.exports = {
     allTopics,
     allArticles,
     findArticle,
+    postComment,
     commentsFromArticle,
     changeVote,
 }

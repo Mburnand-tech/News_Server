@@ -1,6 +1,8 @@
 const { request, response } = require('express')
+
 const { find } = require('lodash')
-const { allTopics, allArticles ,findArticle , commentsFromArticle, changeVote } = require('../models/news.models')
+const { allTopics, allArticles ,findArticle , commentsFromArticle, postComment, ,changeVote } = require('../models/news.models')
+
 
 const newsTopics = (request, response, next) => {
     allTopics().then((topics)=> {
@@ -26,6 +28,21 @@ const specficNewsArticle = (request, response, next) => {
     }).catch(next)
 }
 
+
+const newComment = (request, response, next) => {
+
+    const { body, params} = request
+    
+    findArticle(params.article_id)
+    .then(() => {
+        return postComment(body, params.article_id)
+    })
+    .then((comment) => {
+        response.status(201).send(comment)
+    })
+    .catch(next)   
+}
+  
 const allCommentsById = (request, response, next) => {
     const { article_id } = request.params
     findArticle(article_id)
@@ -35,6 +52,7 @@ const allCommentsById = (request, response, next) => {
     .then((comments) => {
         response.status(200).send(comments)
     }).catch(next)
+
 }
 
 const updateArticleVotes = (request, response, next) => {
@@ -55,6 +73,7 @@ module.exports = {
     newsTopics,
     newsArticles,
     specficNewsArticle,
+    newComment,
     allCommentsById,
     updateArticleVotes,
 }
