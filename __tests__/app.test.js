@@ -90,6 +90,7 @@ describe('GET requests', () => {
             return request(app).get('/api/articles/9/comments')
             .expect(200)
             .then(({body}) => {
+                expect(body.length > 0).toBe(true)
                 body.forEach((comment) => {
                     expect(comment).toHaveProperty('comment_id')
                     expect(comment).toHaveProperty('votes')
