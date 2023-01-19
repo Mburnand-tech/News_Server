@@ -64,10 +64,32 @@ const commentsFromArticle = (article_id) => {
                     })
 }
 
+
+const changeVote = (article_id, voteUpdate) => {
+    
+    //const updateBy = voteUpdate.inc_votes
+    
+    if (!voteUpdate.inc_votes){
+        return Promise.reject({status: 400, msg: 'Body of request invalid'})
+    }
+
+    const updateBy = voteUpdate.inc_votes
+
+    return db.query(`UPDATE articles
+                    SET votes = $1
+                    WHERE article_id = $2
+                    RETURNING *;
+                    `, [updateBy, article_id]).then(({rows}) => {
+                        return rows
+                    })
+}
+
+
 module.exports = {
     allTopics,
     allArticles,
     findArticle,
     postComment,
     commentsFromArticle,
+    changeVote,
 }

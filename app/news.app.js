@@ -2,7 +2,8 @@ const { response, request } = require('express')
 const express = require('express')
 const app = express()
 
-const { newsTopics , newsArticles , specficNewsArticle , allCommentsById ,newComment } = require("../controllers/news.controllers")
+
+const { newsTopics , newsArticles , specficNewsArticle , allCommentsById, newComment  ,updateArticleVotes } = require("../controllers/news.controllers")
 
 
 app.use(express.json())
@@ -13,6 +14,10 @@ app.get(`/api/articles/:article_id`, specficNewsArticle)
 app.get('/api/articles/:article_id/comments', allCommentsById)
 
 app.post('/api/articles/:article_id/comments', newComment)
+
+
+
+app.patch('/api/articles/:article_id', updateArticleVotes)
 
 
 app.use((err, request, response, next) => {
@@ -26,10 +31,14 @@ app.use((err, request, response, next) => {
 })
 
 
+
 app.use((err, request, response, next) => {
     //This is my custom error handler
     const errorHandler = 'Express'
-    if (err.status === 404){      
+    if (err.status === 400){     
+        response.status(400).send(err)
+    }
+    if (err.status === 404){     
         response.status(404).send(err)
     }
 })
