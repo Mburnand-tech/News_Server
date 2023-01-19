@@ -35,7 +35,7 @@ describe('GET requests', () => {
             expect(body.length).toBe(3)
         })
     })
-    test('should return an Array of articles, additional columns of article_id and comment_count', () => {
+    test('should return an Array of articles, by default should responsed with all articles, sorted by date in descending order', () => {
         return request(app).get('/api/articles')
         .expect(200)
         .then(( { body }) => {
@@ -86,7 +86,53 @@ describe('GET requests', () => {
             expect(body.code).toBe('22P02')
         })
     });
+    // test('GET /api/articles (queries): should responsed with all articles, sorted by votes in ascending order', () => {
+    //     return request(app).get('/api/articles?sortby=votes&orderby=asc')
+    //     .expect(200)
+    //     .then(({body}) => {
 
+    //       expect(body.length).toBe(12)
+
+    //       expect(body).toBeSortedBy('votes')
+    //     }) 
+    //  });
+    // test.only('GET /api/articles (queries): should responsed with articles with only topic mitch, sorted by date in descending order', () => {
+    //     return request(app).get('/api/articles?topic=mitch')
+    //     .expect(200)
+    //     .then(({body}) => {
+    //       expect()
+    //       body.forEach((article) => {
+    //         expect(article.topic).toBe('mitch')
+            
+    //       })
+    //       expect(body).toBeSortedBy('created_at', {descending : true})
+    //     }) 
+    //  })
+    // test('GET /api/articles (queries): should responsed with articles with topic cats, sorted by title in ascending order', () => {
+    //     return request(app).get('/api/articles?topic=cats&sortby=title&orderby=asc')
+    //     .expect(200)
+    //     .then(({body}) => {
+    //       expect()
+    //       body.forEach((article) => {
+    //         expect(article.topic).toBe('cats')            
+    //       })
+    //       expect(body).toBeSortedBy('title', {ascending : true})
+    //     }) 
+    //  });
+    // test('GET /api/articles (queries): if any query is mis-spelt return with a message', () => {
+    //     return request(app).get('/api/articles?tItnotright=mitch')
+    //     .expect(400)
+    //     .then(({body}) => {
+    //       expect(body.msg).toBe('Query Invalid')
+    //     }) 
+    //  });
+    //  test('GET /api/articles (queries): by default should responsed with all articles, sorted by date in descending order', () => {
+    //     return request(app).get('/api/articles')
+    //     .expect(200)
+    //     .then(({body}) => {
+    //       expect()
+    //     }) 
+    //  });
 });
 
 describe('POST requests', () => {
@@ -157,7 +203,7 @@ describe('POST requests', () => {
 
 
 
-describe.only('PATCH requests', () => {
+describe('PATCH requests', () => {
     test('PATCH /api/articles/:article_id: Should update articles votes', () => {
         return request(app).patch('/api/articles/3')
         .send({

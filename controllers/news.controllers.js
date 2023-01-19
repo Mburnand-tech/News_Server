@@ -1,6 +1,6 @@
 const { request, response } = require('express')
 
-const { allTopics, allArticles ,findArticle , commentsFromArticle, postComment, changeVote } = require('../models/news.models')
+const { allTopics, allArticles ,findArticle , commentsFromArticle, postComment, changeVote , selectedArticles} = require('../models/news.models')
 
 
 const newsTopics = (request, response, next) => {
@@ -12,11 +12,20 @@ const newsTopics = (request, response, next) => {
 }
 
 const newsArticles = (request, response, next) => {
-    allArticles().then((articles) => {
-        response.status(200).send(articles)
-    }).catch((err) => {
-        next(err)
-    })
+    
+    if (!request.query){
+        allArticles().then((articles) => {
+            response.status(200).send(articles)
+        })
+        .catch(next)
+    }
+    else {
+        selectedArticles(request.query)
+        .then((articles) => {
+            response.status(200).send(articles)
+        })
+        .catch(next)
+    }
 }
 
 

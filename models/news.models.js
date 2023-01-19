@@ -83,6 +83,28 @@ const changeVote = (article_id, voteUpdate) => {
                     })
 }
 
+const selectedArticles = (query) => {
+    //console.log(query.topic)
+    const topic = query.topic ? `${query.topic}` : 'topic'
+    const sortby = query.sortby ? query.sortby : 'created_at'
+    const orderby = query.orderby ? query.orderby : 'DESC'
+    console.log(typeof topic)
+    console.log(topic)
+    console.log(sortby)
+    console.log(orderby)
+
+    return db.query(`SELECT * FROM articles
+                    WHERE topic=${topic}
+                    ORDER BY ${sortby} ${orderby}`)
+                    .then(({rows, rowCount}) => {
+                        //console.log(rows)
+                        if (rowCount === 0){
+                            return Promise.reject({status:404, msg: 'Please broaden filters'})
+                        }
+                        return rows
+                    })
+}
+
 
 module.exports = {
     allTopics,
@@ -91,4 +113,5 @@ module.exports = {
     postComment,
     commentsFromArticle,
     changeVote,
+    selectedArticles,
 }
