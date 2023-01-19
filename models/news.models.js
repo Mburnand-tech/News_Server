@@ -46,6 +46,18 @@ const commentsFromArticle = (article_id) => {
                     })
 }
 
+const changeVote = (article_id, voteUpdate) => {
+    const updateBy = voteUpdate.inc_votes
+
+    return db.query(`UPDATE articles
+                    SET votes = $1
+                    WHERE article_id = $2
+                    RETURNING *;
+                    `, [updateBy, article_id]).then(({rows}) => {
+                        return rows
+                    })
+}
+
 
 
 module.exports = {
@@ -53,4 +65,5 @@ module.exports = {
     allArticles,
     findArticle,
     commentsFromArticle,
+    changeVote,
 }
