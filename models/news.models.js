@@ -37,7 +37,14 @@ const findArticle = (article_id) => {
     })
 }
 
-
+const commentsFromArticle = (article_id) => {
+    
+    return db.query(`SELECT * FROM comments
+                    WHERE article_id = $1
+                    ORDER BY created_at DESC`, [article_id]).then(({rows}) => {
+                        return rows
+                    })
+}
 
 
 
@@ -45,4 +52,5 @@ module.exports = {
     allTopics,
     allArticles,
     findArticle,
+    commentsFromArticle,
 }

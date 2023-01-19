@@ -1,5 +1,6 @@
 const { request, response } = require('express')
-const { allTopics, allArticles ,findArticle } = require('../models/news.models')
+const { find } = require('lodash')
+const { allTopics, allArticles ,findArticle , commentsFromArticle} = require('../models/news.models')
 
 const newsTopics = (request, response, next) => {
     allTopics().then((topics)=> {
@@ -25,11 +26,21 @@ const specficNewsArticle = (request, response, next) => {
     }).catch(next)
 }
 
-
+const allCommentsById = (request, response, next) => {
+    const { article_id } = request.params
+    findArticle(article_id)
+    .then(() => {
+        return commentsFromArticle(article_id)
+    })
+    .then((comments) => {
+        response.status(200).send(comments)
+    }).catch(next)
+}
 
 
 module.exports = {
     newsTopics,
     newsArticles,
     specficNewsArticle,
+    allCommentsById,
 }
