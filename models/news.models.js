@@ -46,6 +46,16 @@ const postComment = (comment, article_id) => {
     }
 
 
+const commentsFromArticle = (article_id) => {
+    
+    return db.query(`SELECT * FROM comments
+                    WHERE article_id = $1
+                    ORDER BY created_at DESC`, [article_id]).then(({rows}) => {
+                        return rows
+                    })
+}
+
+
     return db.query(`INSERT INTO comments
                     (body, author, article_id)
                     VALUES
@@ -62,4 +72,5 @@ module.exports = {
     allArticles,
     findArticle,
     postComment,
+    commentsFromArticle,
 }
