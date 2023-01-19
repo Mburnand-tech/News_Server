@@ -98,8 +98,6 @@ describe('POST requests', () => {
         })
         .expect(201)
         .then(( {body}) => {
-            
-            //console.log(body[0])
 
             expect(body[0].author).toBe('icellusedkars')
             expect(body[0].body).toBe('What an interesting post ... Not! Test body')
@@ -135,5 +133,25 @@ describe('POST requests', () => {
             expect(body.msg).toBe('Resource does not exist')
         })
     })
+    test('should test if no username is given on the body', () => {
+        return request(app).post('/api/articles/2/comments')
+        .send({
+            body : 'What an interesting post ... Not! Test body'
+        })
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe("Please login or create an account to post")
+        })
+    })
+    test('should test if no content is given on the body', () => {
+        return request(app).post('/api/articles/2/comments')
+        .send({
+            username : 'rogersop'
+        })
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe( "Please provide content to post")
+        })
+    });
 });
 

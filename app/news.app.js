@@ -18,7 +18,7 @@ app.use((err, request, response, next) => {
     //This is my PSQL error handler
     const errorHandler = 'PSQL'
     if (err.code === '22P02'){
-        response.status(400).send(err)
+        response.status(400).send({name : err.name, code :err.code,problem: "invalid_text_representation"})
     } else {
         next(err)
     }
