@@ -147,6 +147,16 @@ describe.only('PATCH requests', () => {
             expect(body[0]).toHaveProperty('article_img_url')
         })
     })
+    test('PATCH /api/articles/:article_id: Should update articles votes', () => {
+        return request(app).patch('/api/articles/3')
+        .send({
+            inc_votes : -25
+        })
+        .expect(200)
+        .then(({body}) => {
+            expect(body[0].votes).toBe(-25)
+        })
+    })
     test('PATCH /api/articles/9999: should return a 404 error', () => {
         return request(app).patch('/api/articles/9999')
         .send({
@@ -155,6 +165,36 @@ describe.only('PATCH requests', () => {
         .expect(404)
         .then(({body}) => {
             expect(body.msg).toBe('Resource does not exist')
+        })
+    })
+    test('PATCH /api/articles/NotaNumber: should return a 404 error', () => {
+        return request(app).patch('/api/articles/NotaNumber')
+        .send({
+            inc_votes : -25
+        })
+        .expect(400)
+        .then(({body}) => {
+            expect(body.problem).toBe("invalid_text_representation")
+        })
+    })
+    test('PATCH /api/articles/3: with incorrect body', () => {
+        return request(app).patch('/api/articles/3')
+        .send({
+            wrong : -25
+        })
+        .expect(400)
+        .then(({body}) => {
+            expect(body.msg).toBe('Body of request invalid')
+        })
+    })
+    test('PATCH /api/articles/3: with incorrect body', () => {
+        return request(app).patch('/api/articles/3')
+        .send({
+            inc_votes : 'notANumber'
+        })
+        .expect(400)
+        .then(({body}) => {
+            expect(body.problem).toBe("invalid_text_representation")
         })
     });
 });

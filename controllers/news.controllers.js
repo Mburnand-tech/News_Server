@@ -38,6 +38,7 @@ const allCommentsById = (request, response, next) => {
 }
 
 const updateArticleVotes = (request, response, next) => {
+    
     const { article_id } = request.params
     const { body } = request
     findArticle(article_id)

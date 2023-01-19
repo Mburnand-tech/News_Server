@@ -27,9 +27,13 @@ app.use((err, request, response, next) => {
 })
 
 
+
 app.use((err, request, response, next) => {
     //This is my custom error handler
     const errorHandler = 'Express'
+    if (err.status === 400){     
+        response.status(400).send(err)
+    }
     if (err.status === 404){     
         response.status(404).send(err)
     }
