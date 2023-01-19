@@ -28,14 +28,12 @@ const specficNewsArticle = (request, response, next) => {
 const newComment = (request, response, next) => {
 
     const { body, params} = request
-    //console.log(Date.now())
-    //console.log(body)
-    findArticle()
+    
+    findArticle(params.article_id)
     .then(() => {
         return postComment(body, params.article_id)
     })
     .then((comment) => {
-        console.log(comment)
         response.status(201).send(comment)
     })
     .catch(next)   

@@ -38,20 +38,12 @@ const findArticle = (article_id) => {
 }
 
 const postComment = (comment, article_id) => {
-    console.log(comment)
-    // console.log(article_id)
-    // console.log(Date.now())
-    let currentTime = Date.now()
-    console.log(`INSERT INTO comments
-    (body, votes, author, artice_id, created_at)
-    VALUES
-    ($1, 0, $2, $3, $4);`)
+
     return db.query(`INSERT INTO comments
-                    (body, votes, author, artice_id, created_at)
+                    (body, author, article_id, votes, created_at)
                     VALUES
-                    ($1, 0, $2, $3, $4);`, [comment.body, comment.username, article_id, currentTime])
+                    ($1, $2, $3, 0, NOW()) RETURNING *;`, [comment.body, comment.username, article_id])
                     .then(({rows}) => {
-                        console.log(rows)
                         return rows
                     })
 }
