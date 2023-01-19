@@ -2,14 +2,17 @@ const { response, request } = require('express')
 const express = require('express')
 const app = express()
 
-const { newsTopics , newsArticles , specficNewsArticle , allCommentsById} = require("../controllers/news.controllers")
+const { newsTopics , newsArticles , specficNewsArticle , allCommentsById ,newComment } = require("../controllers/news.controllers")
 
 
+app.use(express.json())
 
 app.get('/api/topics', newsTopics)
 app.get('/api/articles', newsArticles)
 app.get(`/api/articles/:article_id`, specficNewsArticle)
 app.get('/api/articles/:article_id/comments', allCommentsById)
+
+app.post('/api/articles/:article_id/comments', newComment)
 
 
 app.use((err, request, response, next) => {

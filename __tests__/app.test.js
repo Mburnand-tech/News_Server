@@ -125,3 +125,69 @@ describe('GET requests', () => {
     });
 });
 
+describe('POST requests', () => {
+    test('/api/articles/:article_id/comments: should return the posted comment', () => {
+        return request(app).post('/api/articles/9/comments')
+        .send({
+            username : 'icellusedkars',
+            body : 'What an interesting post ... Not! Test body'
+        })
+        .expect(201)
+        .then(( {body}) => {
+
+            expect(body[0].author).toBe('icellusedkars')
+            expect(body[0].body).toBe('What an interesting post ... Not! Test body')
+            body.forEach((insert) => {
+                expect(insert).toHaveProperty('body')
+                expect(insert).toHaveProperty('votes')
+                expect(insert).toHaveProperty('author')
+                expect(insert).toHaveProperty('article_id')
+                expect(insert).toHaveProperty('created_at')
+            })
+        })
+
+    });
+    test('/api/articles/NotaNumber/comments: should return error', () => {
+        return request(app).post('/api/articles/NotaNumber/comments')
+        .send({
+            username : 'icellusedkars',
+            body : 'What an interesting post ... Not! Test body'
+        })
+        .expect(400)
+        .then(({body}) => {
+            expect(body.code).toBe('22P02')
+        })
+    });
+    test('/api/articles/9/comments: should return error for missing username', () => {
+        return request(app).post('/api/articles/9999/comments')
+        .send({
+            username : 'NotaUsername',
+            body : 'What an interesting post ... Not! Test body'
+        })
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('Resource does not exist')
+        })
+    })
+    test('should test if no username is given on the body', () => {
+        return request(app).post('/api/articles/2/comments')
+        .send({
+            body : 'What an interesting post ... Not! Test body'
+        })
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe("Please login or create an account to post")
+        })
+    })
+    test('should test if no content is given on the body', () => {
+        return request(app).post('/api/articles/2/comments')
+        .send({
+            username : 'rogersop'
+        })
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe( "Please provide content to post")
+        })
+    });
+});
+
