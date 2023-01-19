@@ -1,7 +1,6 @@
 const { request, response } = require('express')
 
-const { find } = require('lodash')
-const { allTopics, allArticles ,findArticle , commentsFromArticle, postComment, ,changeVote } = require('../models/news.models')
+const { allTopics, allArticles ,findArticle , commentsFromArticle, postComment, changeVote } = require('../models/news.models')
 
 
 const newsTopics = (request, response, next) => {

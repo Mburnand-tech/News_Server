@@ -67,7 +67,6 @@ const commentsFromArticle = (article_id) => {
 
 const changeVote = (article_id, voteUpdate) => {
     
-    //const updateBy = voteUpdate.inc_votes
     
     if (!voteUpdate.inc_votes){
         return Promise.reject({status: 400, msg: 'Body of request invalid'})

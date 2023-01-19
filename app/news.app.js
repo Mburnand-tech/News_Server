@@ -15,8 +15,6 @@ app.get('/api/articles/:article_id/comments', allCommentsById)
 
 app.post('/api/articles/:article_id/comments', newComment)
 
-
-
 app.patch('/api/articles/:article_id', updateArticleVotes)
 
 
