@@ -103,14 +103,16 @@ const selectedArticles = (query) => {
                     .catch((err)=> {
                         return Promise.reject(err)
                     })
+}
 
 const allUsers = () => {
     return db.query(`SELECT * 
                     FROM users`).then(({rows, rowCount}) => {
                         return rows
                     })
+                
+                }
 
-}
 
 
 module.exports = {
