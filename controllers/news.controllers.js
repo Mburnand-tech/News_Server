@@ -1,3 +1,4 @@
+const endPoints = require('../endpoints.json')
 const { request, response } = require('express')
 
 
@@ -10,14 +11,16 @@ const { allTopics,
     selectedArticles,
     allUsers } = require('../models/news.models')
 
-
+const endPointInfo = (request, response, next) => {
+        response.status(200).send(endPoints)
+}
 
 const newsTopics = (request, response, next) => {
-    allTopics().then((topics)=> {
-        response.status(200).send(topics)
-    }).catch((err) => {
-        next(err)
-    })
+        allTopics().then((topics)=> {
+            response.status(200).send(topics)
+        }).catch((err) => {
+            next(err)
+        })
 }
 
 const newsArticles = (request, response, next) => {
@@ -31,57 +34,57 @@ const newsArticles = (request, response, next) => {
 }
 
 const specficNewsArticle = (request, response, next) => {
-    const { article_id } = request.params
-    findArticle(article_id).then((article) => {
-        response.status(200).send({article})
-    }).catch(next)
+        const { article_id } = request.params
+        findArticle(article_id).then((article) => {
+            response.status(200).send({article})
+        }).catch(next)
 }
 
 const newComment = (request, response, next) => {
 
-    const { body, params} = request
-    
-    findArticle(params.article_id)
-    .then(() => {
-        return postComment(body, params.article_id)
-    })
-    .then((comment) => {
-        response.status(201).send(comment)
-    })
-    .catch(next)   
+        const { body, params} = request
+        
+        findArticle(params.article_id)
+        .then(() => {
+            return postComment(body, params.article_id)
+        })
+        .then((comment) => {
+            response.status(201).send(comment)
+        })
+        .catch(next)   
 }
   
 const allCommentsById = (request, response, next) => {
-    const { article_id } = request.params
-    findArticle(article_id)
-    .then(() => {
-        return commentsFromArticle(article_id)
-    })
-    .then((comments) => {
-        response.status(200).send(comments)
-    }).catch(next)
+        const { article_id } = request.params
+        findArticle(article_id)
+        .then(() => {
+            return commentsFromArticle(article_id)
+        })
+        .then((comments) => {
+            response.status(200).send(comments)
+        }).catch(next)
 
 }
 
 const updateArticleVotes = (request, response, next) => {
-    
-    const { article_id } = request.params
-    const { body } = request
-    findArticle(article_id)
-    .then(() => {
-        return changeVote(article_id, body)
-    }).then((update) => {
-        response.status(200).send(update)
-    })
-    .catch(next)
+        
+        const { article_id } = request.params
+        const { body } = request
+        findArticle(article_id)
+        .then(() => {
+            return changeVote(article_id, body)
+        }).then((update) => {
+            response.status(200).send(update)
+        })
+        .catch(next)
 }
 
 const platformUsers = (request, response, next) => {
-    allUsers()
-    .then((users) => {
-        response.status(200).send(users)
-    })
-    .catch(next)
+        allUsers()
+        .then((users) => {
+            response.status(200).send(users)
+        })
+        .catch(next)
 }
 
 
@@ -93,4 +96,5 @@ module.exports = {
     allCommentsById,
     updateArticleVotes,
     platformUsers,
+    endPointInfo,
 }

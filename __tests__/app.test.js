@@ -86,7 +86,6 @@ describe('GET requests', () => {
             expect(body.code).toBe('22P02')
         })
     });
-
     test('GET /api/articles (queries): should responsed with all articles, sorted by votes in ascending order', () => {
         return request(app).get('/api/articles?sortby=votes&orderby=asc')
         .expect(200)
@@ -193,7 +192,16 @@ describe('GET requests', () => {
         .then(({body}) => {
             expect(body.msg).toBe('Resource does not exist')
         })
-    });    
+    }); 
+    test('13. GET /api', () => {
+        return request(app).get('/api')
+        .expect(200)
+        .then(({body}) => {
+            expect(body).toHaveProperty("GET /api")
+            expect(body).toHaveProperty("GET /api/topics")
+            expect(body).toHaveProperty("GET /api/articles")
+        })
+    });   
 });
 
 describe('POST requests', () => {
