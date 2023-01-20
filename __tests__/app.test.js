@@ -86,53 +86,65 @@ describe('GET requests', () => {
             expect(body.code).toBe('22P02')
         })
     });
-    // test('GET /api/articles (queries): should responsed with all articles, sorted by votes in ascending order', () => {
-    //     return request(app).get('/api/articles?sortby=votes&orderby=asc')
-    //     .expect(200)
-    //     .then(({body}) => {
+    test('GET /api/articles (queries): should responsed with all articles, sorted by votes in ascending order', () => {
+        return request(app).get('/api/articles?sortby=votes&orderby=asc')
+        .expect(200)
+        .then(({body}) => {
 
-    //       expect(body.length).toBe(12)
+          expect(body.length).toBe(12)
 
-    //       expect(body).toBeSortedBy('votes')
-    //     }) 
-    //  });
-    // test.only('GET /api/articles (queries): should responsed with articles with only topic mitch, sorted by date in descending order', () => {
-    //     return request(app).get('/api/articles?topic=mitch')
-    //     .expect(200)
-    //     .then(({body}) => {
-    //       expect()
-    //       body.forEach((article) => {
-    //         expect(article.topic).toBe('mitch')
+          expect(body).toBeSortedBy('votes')
+        }) 
+     });
+    test('GET /api/articles (queries): should responsed with articles with only topic mitch, sorted by date in descending order', () => {
+        return request(app).get('/api/articles?topic=mitch')
+        .expect(200)
+        .then(({body}) => {
+          expect()
+          body.forEach((article) => {
+            expect(article.topic).toBe('mitch')
             
-    //       })
-    //       expect(body).toBeSortedBy('created_at', {descending : true})
-    //     }) 
-    //  })
-    // test('GET /api/articles (queries): should responsed with articles with topic cats, sorted by title in ascending order', () => {
-    //     return request(app).get('/api/articles?topic=cats&sortby=title&orderby=asc')
-    //     .expect(200)
-    //     .then(({body}) => {
-    //       expect()
-    //       body.forEach((article) => {
-    //         expect(article.topic).toBe('cats')            
-    //       })
-    //       expect(body).toBeSortedBy('title', {ascending : true})
-    //     }) 
-    //  });
-    // test('GET /api/articles (queries): if any query is mis-spelt return with a message', () => {
-    //     return request(app).get('/api/articles?tItnotright=mitch')
-    //     .expect(400)
-    //     .then(({body}) => {
-    //       expect(body.msg).toBe('Query Invalid')
-    //     }) 
-    //  });
-    //  test('GET /api/articles (queries): by default should responsed with all articles, sorted by date in descending order', () => {
-    //     return request(app).get('/api/articles')
-    //     .expect(200)
-    //     .then(({body}) => {
-    //       expect()
-    //     }) 
-    //  });
+          })
+          expect(body).toBeSortedBy('created_at', {descending : true})
+        }) 
+     })
+    test('GET /api/articles (queries): should responsed with articles with topic cats, sorted by title in ascending order', () => {
+        return request(app).get('/api/articles?topic=cats&sortby=title&orderby=asc')
+        .expect(200)
+        .then(({body}) => {
+          body.forEach((article) => {
+            expect(article.topic).toBe('cats')            
+          })
+          expect(body).toBeSortedBy('title', {ascending : true})
+        }) 
+     });
+    test('GET /api/articles (queries): if any query param is mis-spelt ignore and return with full result', () => {
+        return request(app).get('/api/articles?Itnotright=mitch')
+        .expect(200)
+        .then(({body}) => {
+            expect(body.length).toBe(12)
+
+            body.forEach((element) => {
+                expect(element).toHaveProperty('author')
+                expect(element).toHaveProperty('title')
+                expect(element).toHaveProperty('article_id')
+                expect(element).toHaveProperty('topic')
+                expect(element).toHaveProperty('created_at')
+                expect(element).toHaveProperty('votes')
+                expect(element).toHaveProperty('article_img_url')
+                expect(element).toHaveProperty('comment_count')
+            })
+            expect(body).toBeSortedBy('created_at' , {descending: true})
+         
+        }) 
+     });
+     test('GET /api/articles (queries): if any query is mis-spelt return with a message', () => {
+        return request(app).get('/api/articles?orderby=Thisisntright')
+        .expect(404)
+        .then(({body}) => {
+          expect(body.problem).toBe("syntax_error")
+        }) 
+     });
 });
 
 describe('POST requests', () => {

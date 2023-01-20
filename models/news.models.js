@@ -9,20 +9,6 @@ const allTopics = () => {
     })
 }
 
-const allArticles = () => {    
-    
-    return db.query(`SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url,
-        COUNT(comments.article_id)
-        AS comment_count
-        FROM articles
-        LEFT JOIN comments
-        ON articles.article_id = comments.article_id
-        GROUP BY articles.article_id
-        ORDER BY created_at DESC;`).then(({rows})=> {                    
-                    
-                    return rows
-                })
-}
 
 const findArticle = (article_id) => {
     const query = `SELECT * FROM articles
@@ -84,31 +70,43 @@ const changeVote = (article_id, voteUpdate) => {
 }
 
 const selectedArticles = (query) => {
-    //console.log(query.topic)
-    const topic = query.topic ? `${query.topic}` : 'topic'
+
+     let querySQL = `
+        SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url,
+        COUNT(comments.article_id)
+        AS comment_count
+        FROM articles
+        LEFT JOIN comments
+        ON articles.article_id = comments.article_id` 
+
+    if (query.topic){
+        // Should I iterate for mulitple topics?
+        querySQL += `
+        WHERE topic='${query.topic}'`
+    }
+
     const sortby = query.sortby ? query.sortby : 'created_at'
     const orderby = query.orderby ? query.orderby : 'DESC'
-    console.log(typeof topic)
-    console.log(topic)
-    console.log(sortby)
-    console.log(orderby)
 
-    return db.query(`SELECT * FROM articles
-                    WHERE topic=${topic}
-                    ORDER BY ${sortby} ${orderby}`)
+    querySQL += `
+        GROUP BY articles.article_id
+        ORDER BY ${sortby} ${orderby};`
+    
+    return db.query(querySQL)
                     .then(({rows, rowCount}) => {
-                        //console.log(rows)
                         if (rowCount === 0){
                             return Promise.reject({status:404, msg: 'Please broaden filters'})
                         }
                         return rows
+                    })
+                    .catch((err)=> {
+                        return Promise.reject(err)
                     })
 }
 
 
 module.exports = {
     allTopics,
-    allArticles,
     findArticle,
     postComment,
     commentsFromArticle,
