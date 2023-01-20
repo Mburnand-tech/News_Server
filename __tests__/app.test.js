@@ -258,7 +258,9 @@ describe('DELETE requests', () => {
             return request(app).get('/api/articles/9/comments')
             .expect(200)
             .then(({body}) => {
-                expect(body[0].comment_id).not.toBe(1)
+                body.forEach((comment) => {
+                    expect(comment.comment_id).not.toBe(1)
+                })
             })
         })
     })
