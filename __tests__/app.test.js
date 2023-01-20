@@ -86,6 +86,7 @@ describe('GET requests', () => {
             expect(body.code).toBe('22P02')
         })
     });
+
     test('GET /api/articles (queries): should responsed with all articles, sorted by votes in ascending order', () => {
         return request(app).get('/api/articles?sortby=votes&orderby=asc')
         .expect(200)
@@ -145,6 +146,21 @@ describe('GET requests', () => {
           expect(body.problem).toBe("syntax_error")
         }) 
      });
+
+    test('GET /api/users: should return an array of object with 3 properties', () => {
+        return request(app).get('/api/users')
+        .expect(200)
+        .then(({body}) => {
+            expect(body.length > 0).toBe(true)
+
+            body.forEach((user) => {
+                expect(user).toHaveProperty('username')
+                expect(user).toHaveProperty('name')
+                expect(user).toHaveProperty('avatar_url')
+            })
+        })
+    })    
+
 });
 
 describe('POST requests', () => {

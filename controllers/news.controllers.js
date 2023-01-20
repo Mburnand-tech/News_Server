@@ -1,6 +1,15 @@
 const { request, response } = require('express')
 
-const { allTopics, findArticle , commentsFromArticle, postComment, changeVote , selectedArticles} = require('../models/news.models')
+
+const { allTopics,
+    allArticles,
+    findArticle,
+    commentsFromArticle,
+    postComment,
+    changeVote,
+    selectedArticles,
+    allUsers } = require('../models/news.models')
+
 
 
 const newsTopics = (request, response, next) => {
@@ -67,6 +76,14 @@ const updateArticleVotes = (request, response, next) => {
     .catch(next)
 }
 
+const platformUsers = (request, response, next) => {
+    allUsers()
+    .then((users) => {
+        response.status(200).send(users)
+    })
+    .catch(next)
+}
+
 
 module.exports = {
     newsTopics,
@@ -75,4 +92,5 @@ module.exports = {
     newComment,
     allCommentsById,
     updateArticleVotes,
+    platformUsers,
 }

@@ -69,6 +69,7 @@ const changeVote = (article_id, voteUpdate) => {
                     })
 }
 
+
 const selectedArticles = (query) => {
 
      let querySQL = `
@@ -102,6 +103,13 @@ const selectedArticles = (query) => {
                     .catch((err)=> {
                         return Promise.reject(err)
                     })
+
+const allUsers = () => {
+    return db.query(`SELECT * 
+                    FROM users`).then(({rows, rowCount}) => {
+                        return rows
+                    })
+
 }
 
 
@@ -112,4 +120,5 @@ module.exports = {
     commentsFromArticle,
     changeVote,
     selectedArticles,
+    allUsers,
 }
