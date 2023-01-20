@@ -7,8 +7,10 @@ const { allTopics,
     commentsFromArticle,
     postComment,
     changeVote,
+    allUsers,
     selectedArticles,
-    allUsers } = require('../models/news.models')
+    deleteComment } = require('../models/news.models')
+
 
 
 
@@ -84,6 +86,14 @@ const platformUsers = (request, response, next) => {
     .catch(next)
 }
 
+const removeComment = (request, response, next) => {
+    deleteComment(request.params.comment_id)
+    .then((deletedComment) => {
+        response.status(204).send(deletedComment)
+    })
+    .catch(next)
+}
+
 
 module.exports = {
     newsTopics,
@@ -93,4 +103,5 @@ module.exports = {
     allCommentsById,
     updateArticleVotes,
     platformUsers,
+    removeComment,
 }
