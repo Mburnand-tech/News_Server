@@ -98,7 +98,28 @@ describe('GET requests', () => {
                 expect(user).toHaveProperty('avatar_url')
             })
         })
-    })    
+    })
+    test('11. GET /api/articles/:article_id: does query return property with comment count', () => {
+        return request(app).get('/api/articles/4')
+        .expect(200)
+        .then(({body}) => {
+            expect(body).toHaveProperty('comment_count')
+        })
+    });
+    test('11. GET /api/articles/:article_id: does query return articles with same article id', () => {
+        return request(app).get('/api/articles/2')
+        .expect(200)
+        .then(({body}) => {
+            expect(body.article_id).toBe(2)
+        })
+    });
+    test('11. GET /api/articles/:article_id: query with out of range article_id return error: Resource does not exist', () => {
+        return request(app).get('/api/articles/999')
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('Resource does not exist')
+        })
+    });    
 });
 
 describe('POST requests', () => {
@@ -165,6 +186,8 @@ describe('POST requests', () => {
             expect(body.msg).toBe( "Please provide content to post")
         })
     });
+ 
+    
 });
 
 
