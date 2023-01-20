@@ -60,16 +60,16 @@ describe('GET requests', () => {
         .expect(200)
         .then(( {body}) => {
 
-            expect(body).toHaveProperty('author')
-            expect(body).toHaveProperty('title')
-            expect(body).toHaveProperty('article_id')
-            expect(body).toHaveProperty('body')
-            expect(body).toHaveProperty('topic')
-            expect(body).toHaveProperty('created_at')
-            expect(body).toHaveProperty('votes')
-            expect(body).toHaveProperty('article_img_url')
+            expect(body.article[0]).toHaveProperty('author')
+            expect(body.article[0]).toHaveProperty('title')
+            expect(body.article[0]).toHaveProperty('article_id')
+            expect(body.article[0]).toHaveProperty('body')
+            expect(body.article[0]).toHaveProperty('topic')
+            expect(body.article[0]).toHaveProperty('created_at')
+            expect(body.article[0]).toHaveProperty('votes')
+            expect(body.article[0]).toHaveProperty('article_img_url')
 
-            expect(body.article_id).toBe(9)
+            expect(body.article[0].article_id).toBe(9)
         })
     });
     test('With resource not found should return a 404 error', () => {
@@ -159,8 +159,41 @@ describe('GET requests', () => {
                 expect(user).toHaveProperty('avatar_url')
             })
         })
-    })    
 
+    })
+    test('11. GET /api/articles/:article_id: does query return property with comment count', () => {
+        return request(app).get('/api/articles/4')
+        .expect(200)
+        .then(({body}) => {
+            expect(body.article[0]).toHaveProperty('comment_count')
+            expect(body.article[0].comment_count * 1).toBe(0)
+        })
+    });
+    test('11. GET /api/articles/:article_id: does query return articles with same article id', () => {
+        return request(app).get('/api/articles/2')
+        .expect(200)
+        .then(({body}) => {
+            expect(body.article[0].article_id).toBe(2)
+
+            expect(body.article[0]).toHaveProperty('article_id')
+            expect(body.article[0]).toHaveProperty('author')
+            expect(body.article[0]).toHaveProperty('title')
+            expect(body.article[0]).toHaveProperty('body')
+            expect(body.article[0]).toHaveProperty('topic')
+            expect(body.article[0]).toHaveProperty('created_at')
+            expect(body.article[0]).toHaveProperty('votes')
+            expect(body.article[0]).toHaveProperty('article_img_url')
+            expect(body.article[0]).toHaveProperty('comment_count')
+
+        })
+    });
+    test('11. GET /api/articles/:article_id: query with out of range article_id return error: Resource does not exist', () => {
+        return request(app).get('/api/articles/999')
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('Resource does not exist')
+        })
+    });    
 });
 
 describe('POST requests', () => {

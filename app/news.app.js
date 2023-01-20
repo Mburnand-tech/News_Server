@@ -31,6 +31,9 @@ app.use((err, request, response, next) => {
     const errorHandler = 'PSQL'
     if (err.code === '22P02'){
         response.status(400).send({name : err.name, code :err.code,problem: "invalid_text_representation"})
+    }
+    if (err.code === '08P01'){
+        response.status(400).send({name : err.name, code :err.code,problem: "protocol_violation"})
     } 
     if (err.code === '42601'){
         response.status(404).send({name : err.name, code :err.code,problem: "syntax_error"})

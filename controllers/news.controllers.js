@@ -33,7 +33,7 @@ const newsArticles = (request, response, next) => {
 const specficNewsArticle = (request, response, next) => {
     const { article_id } = request.params
     findArticle(article_id).then((article) => {
-        response.status(200).send(article[0])
+        response.status(200).send({article})
     }).catch(next)
 }
 
