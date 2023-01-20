@@ -1,12 +1,15 @@
 const { request, response } = require('express')
 
+
 const { allTopics,
     allArticles,
     findArticle,
     commentsFromArticle,
     postComment,
     changeVote,
+    selectedArticles,
     allUsers } = require('../models/news.models')
+
 
 
 const newsTopics = (request, response, next) => {
@@ -18,13 +21,14 @@ const newsTopics = (request, response, next) => {
 }
 
 const newsArticles = (request, response, next) => {
-    allArticles().then((articles) => {
-        response.status(200).send(articles)
-    }).catch((err) => {
-        next(err)
-    })
+    
+        selectedArticles(request.query)
+        .then((articles) => {
+            response.status(200).send(articles)
+        })
+        .catch(next)
+    
 }
-
 
 const specficNewsArticle = (request, response, next) => {
     const { article_id } = request.params
@@ -32,7 +36,6 @@ const specficNewsArticle = (request, response, next) => {
         response.status(200).send({article})
     }).catch(next)
 }
-
 
 const newComment = (request, response, next) => {
 

@@ -34,7 +34,10 @@ app.use((err, request, response, next) => {
     }
     if (err.code === '08P01'){
         response.status(400).send({name : err.name, code :err.code,problem: "protocol_violation"})
-    }  
+    } 
+    if (err.code === '42601'){
+        response.status(404).send({name : err.name, code :err.code,problem: "syntax_error"})
+    } 
     else {
         next(err)
     }
