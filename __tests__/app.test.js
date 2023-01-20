@@ -35,7 +35,7 @@ describe('GET requests', () => {
             expect(body.length).toBe(3)
         })
     })
-    test('should return an Array of articles, additional columns of article_id and comment_count', () => {
+    test('should return an Array of articles, by default should responsed with all articles, sorted by date in descending order', () => {
         return request(app).get('/api/articles')
         .expect(200)
         .then(( { body }) => {
@@ -60,16 +60,16 @@ describe('GET requests', () => {
         .expect(200)
         .then(( {body}) => {
 
-            expect(body).toHaveProperty('author')
-            expect(body).toHaveProperty('title')
-            expect(body).toHaveProperty('article_id')
-            expect(body).toHaveProperty('body')
-            expect(body).toHaveProperty('topic')
-            expect(body).toHaveProperty('created_at')
-            expect(body).toHaveProperty('votes')
-            expect(body).toHaveProperty('article_img_url')
+            expect(body.article[0]).toHaveProperty('author')
+            expect(body.article[0]).toHaveProperty('title')
+            expect(body.article[0]).toHaveProperty('article_id')
+            expect(body.article[0]).toHaveProperty('body')
+            expect(body.article[0]).toHaveProperty('topic')
+            expect(body.article[0]).toHaveProperty('created_at')
+            expect(body.article[0]).toHaveProperty('votes')
+            expect(body.article[0]).toHaveProperty('article_img_url')
 
-            expect(body.article_id).toBe(9)
+            expect(body.article[0].article_id).toBe(9)
         })
     });
     test('With resource not found should return a 404 error', () => {
@@ -86,6 +86,67 @@ describe('GET requests', () => {
             expect(body.code).toBe('22P02')
         })
     });
+
+    test('GET /api/articles (queries): should responsed with all articles, sorted by votes in ascending order', () => {
+        return request(app).get('/api/articles?sortby=votes&orderby=asc')
+        .expect(200)
+        .then(({body}) => {
+
+          expect(body.length).toBe(12)
+
+          expect(body).toBeSortedBy('votes')
+        }) 
+     });
+    test('GET /api/articles (queries): should responsed with articles with only topic mitch, sorted by date in descending order', () => {
+        return request(app).get('/api/articles?topic=mitch')
+        .expect(200)
+        .then(({body}) => {
+          expect()
+          body.forEach((article) => {
+            expect(article.topic).toBe('mitch')
+            
+          })
+          expect(body).toBeSortedBy('created_at', {descending : true})
+        }) 
+     })
+    test('GET /api/articles (queries): should responsed with articles with topic cats, sorted by title in ascending order', () => {
+        return request(app).get('/api/articles?topic=cats&sortby=title&orderby=asc')
+        .expect(200)
+        .then(({body}) => {
+          body.forEach((article) => {
+            expect(article.topic).toBe('cats')            
+          })
+          expect(body).toBeSortedBy('title', {ascending : true})
+        }) 
+     });
+    test('GET /api/articles (queries): if any query param is mis-spelt ignore and return with full result', () => {
+        return request(app).get('/api/articles?Itnotright=mitch')
+        .expect(200)
+        .then(({body}) => {
+            expect(body.length).toBe(12)
+
+            body.forEach((element) => {
+                expect(element).toHaveProperty('author')
+                expect(element).toHaveProperty('title')
+                expect(element).toHaveProperty('article_id')
+                expect(element).toHaveProperty('topic')
+                expect(element).toHaveProperty('created_at')
+                expect(element).toHaveProperty('votes')
+                expect(element).toHaveProperty('article_img_url')
+                expect(element).toHaveProperty('comment_count')
+            })
+            expect(body).toBeSortedBy('created_at' , {descending: true})
+         
+        }) 
+     });
+     test('GET /api/articles (queries): if any query is mis-spelt return with a message', () => {
+        return request(app).get('/api/articles?orderby=Thisisntright')
+        .expect(404)
+        .then(({body}) => {
+          expect(body.problem).toBe("syntax_error")
+        }) 
+     });
+
     test('GET /api/users: should return an array of object with 3 properties', () => {
         return request(app).get('/api/users')
         .expect(200)
@@ -98,7 +159,41 @@ describe('GET requests', () => {
                 expect(user).toHaveProperty('avatar_url')
             })
         })
-    })    
+
+    })
+    test('11. GET /api/articles/:article_id: does query return property with comment count', () => {
+        return request(app).get('/api/articles/4')
+        .expect(200)
+        .then(({body}) => {
+            expect(body.article[0]).toHaveProperty('comment_count')
+            expect(body.article[0].comment_count * 1).toBe(0)
+        })
+    });
+    test('11. GET /api/articles/:article_id: does query return articles with same article id', () => {
+        return request(app).get('/api/articles/2')
+        .expect(200)
+        .then(({body}) => {
+            expect(body.article[0].article_id).toBe(2)
+
+            expect(body.article[0]).toHaveProperty('article_id')
+            expect(body.article[0]).toHaveProperty('author')
+            expect(body.article[0]).toHaveProperty('title')
+            expect(body.article[0]).toHaveProperty('body')
+            expect(body.article[0]).toHaveProperty('topic')
+            expect(body.article[0]).toHaveProperty('created_at')
+            expect(body.article[0]).toHaveProperty('votes')
+            expect(body.article[0]).toHaveProperty('article_img_url')
+            expect(body.article[0]).toHaveProperty('comment_count')
+
+        })
+    });
+    test('11. GET /api/articles/:article_id: query with out of range article_id return error: Resource does not exist', () => {
+        return request(app).get('/api/articles/999')
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('Resource does not exist')
+        })
+    });    
 });
 
 describe('POST requests', () => {

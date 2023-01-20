@@ -9,31 +9,24 @@ const allTopics = () => {
     })
 }
 
-const allArticles = () => {    
-    
-    return db.query(`SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url,
-        COUNT(comments.article_id)
-        AS comment_count
-        FROM articles
-        LEFT JOIN comments
-        ON articles.article_id = comments.article_id
-        GROUP BY articles.article_id
-        ORDER BY created_at DESC;`).then(({rows})=> {                    
-                    
-                    return rows
-                })
-}
 
 const findArticle = (article_id) => {
-    const query = `SELECT * FROM articles
-                    WHERE article_id = $1;`
+    
+    const query = `SELECT articles.author, articles.title, articles.article_id, articles.body ,articles.topic, articles.created_at, articles.votes, articles.article_img_url,
+    COUNT(comments.article_id)
+    AS comment_count
+    FROM articles
+    LEFT JOIN comments
+    ON articles.article_id = comments.article_id
+    WHERE articles.article_id = $1
+    GROUP BY articles.article_id;`
     return db.query(query, [article_id]).then(({rowCount , rows})=> {
         if (rowCount === 0){
             return Promise.reject({status:404, msg: 'Resource does not exist'})
         } 
-        else {
-            return rows
-        }
+        return rows
+    }).catch((err) => {
+        return Promise.reject(err)
     })
 }
 
@@ -83,12 +76,50 @@ const changeVote = (article_id, voteUpdate) => {
                     })
 }
 
+
+const selectedArticles = (query) => {
+
+     let querySQL = `
+        SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url,
+        COUNT(comments.article_id)
+        AS comment_count
+        FROM articles
+        LEFT JOIN comments
+        ON articles.article_id = comments.article_id` 
+
+    if (query.topic){
+        // Should I iterate for mulitple topics?
+        querySQL += `
+        WHERE topic='${query.topic}'`
+    }
+
+    const sortby = query.sortby ? query.sortby : 'created_at'
+    const orderby = query.orderby ? query.orderby : 'DESC'
+
+    querySQL += `
+        GROUP BY articles.article_id
+        ORDER BY ${sortby} ${orderby};`
+    
+    return db.query(querySQL)
+                    .then(({rows, rowCount}) => {
+                        if (rowCount === 0){
+                            return Promise.reject({status:404, msg: 'Please broaden filters'})
+                        }
+                        return rows
+                    })
+                    .catch((err)=> {
+                        return Promise.reject(err)
+                    })
+}
+
 const allUsers = () => {
     return db.query(`SELECT * 
                     FROM users`).then(({rows, rowCount}) => {
                         return rows
                     })
-}
+                
+                }
+
 
 
 const deleteComment = (comment_id) => {
@@ -109,11 +140,11 @@ const deleteComment = (comment_id) => {
 
 module.exports = {
     allTopics,
-    allArticles,
     findArticle,
     postComment,
     commentsFromArticle,
     changeVote,
+    selectedArticles,
     allUsers,
     deleteComment,
 }

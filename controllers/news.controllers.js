@@ -1,5 +1,6 @@
 const { request, response } = require('express')
 
+
 const { allTopics,
     allArticles,
     findArticle,
@@ -7,7 +8,10 @@ const { allTopics,
     postComment,
     changeVote,
     allUsers,
+    selectedArticles,
     deleteComment } = require('../models/news.models')
+
+
 
 
 const newsTopics = (request, response, next) => {
@@ -19,21 +23,21 @@ const newsTopics = (request, response, next) => {
 }
 
 const newsArticles = (request, response, next) => {
-    allArticles().then((articles) => {
-        response.status(200).send(articles)
-    }).catch((err) => {
-        next(err)
-    })
+    
+        selectedArticles(request.query)
+        .then((articles) => {
+            response.status(200).send(articles)
+        })
+        .catch(next)
+    
 }
-
 
 const specficNewsArticle = (request, response, next) => {
     const { article_id } = request.params
     findArticle(article_id).then((article) => {
-        response.status(200).send(article[0])
+        response.status(200).send({article})
     }).catch(next)
 }
-
 
 const newComment = (request, response, next) => {
 
