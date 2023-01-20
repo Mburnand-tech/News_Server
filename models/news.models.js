@@ -83,6 +83,13 @@ const changeVote = (article_id, voteUpdate) => {
                     })
 }
 
+const allUsers = () => {
+    return db.query(`SELECT * 
+                    FROM users`).then(({rows, rowCount}) => {
+                        return rows
+                    })
+}
+
 
 module.exports = {
     allTopics,
@@ -91,4 +98,5 @@ module.exports = {
     postComment,
     commentsFromArticle,
     changeVote,
+    allUsers,
 }

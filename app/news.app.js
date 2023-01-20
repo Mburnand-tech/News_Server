@@ -3,7 +3,14 @@ const express = require('express')
 const app = express()
 
 
-const { newsTopics , newsArticles , specficNewsArticle , allCommentsById, newComment  ,updateArticleVotes } = require("../controllers/news.controllers")
+const { newsTopics,
+        newsArticles,
+        specficNewsArticle,
+        allCommentsById,
+        newComment,
+        updateArticleVotes,
+        platformUsers,
+     } = require("../controllers/news.controllers")
 
 
 app.use(express.json())
@@ -12,6 +19,7 @@ app.get('/api/topics', newsTopics)
 app.get('/api/articles', newsArticles)
 app.get(`/api/articles/:article_id`, specficNewsArticle)
 app.get('/api/articles/:article_id/comments', allCommentsById)
+app.get('/api/users', platformUsers)
 
 app.post('/api/articles/:article_id/comments', newComment)
 
