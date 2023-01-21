@@ -191,7 +191,16 @@ describe('GET requests', () => {
         .then(({body}) => {
             expect(body.msg).toBe('Resource does not exist')
         })
-    });    
+    }); 
+    test('13. GET /api', () => {
+        return request(app).get('/api')
+        .expect(200)
+        .then(({body}) => {
+            expect(body).toHaveProperty("GET /api")
+            expect(body).toHaveProperty("GET /api/topics")
+            expect(body).toHaveProperty("GET /api/articles")
+        })
+    });   
 });
 
 describe('POST requests', () => {

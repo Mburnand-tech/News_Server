@@ -10,6 +10,7 @@ const { newsTopics,
         newComment,
         updateArticleVotes,
         platformUsers,
+        endPointInfo,
         removeComment,
      } = require("../controllers/news.controllers")
 
@@ -21,6 +22,7 @@ app.get('/api/articles', newsArticles)
 app.get(`/api/articles/:article_id`, specficNewsArticle)
 app.get('/api/articles/:article_id/comments', allCommentsById)
 app.get('/api/users', platformUsers)
+app.get('/api', endPointInfo) 
 
 app.post('/api/articles/:article_id/comments', newComment)
 
