@@ -145,7 +145,6 @@ describe('GET requests', () => {
           expect(body.problem).toBe("syntax_error")
         }) 
      });
-
     test('GET /api/users: should return an array of object with 3 properties', () => {
         return request(app).get('/api/users')
         .expect(200)
@@ -343,4 +342,42 @@ describe('PATCH requests', () => {
             expect(body.problem).toBe("invalid_text_representation")
         })
     });
+});
+
+
+describe('DELETE requests', () => {
+    test('shows comment exists', () => {
+        return request(app).get('/api/articles/9/comments')
+        .expect(200)
+        .then(({body}) => {
+            expect(body[0].comment_id).toBe(1)
+        })
+    })
+    test('12. DELETE /api/comments/:comment_id: delete comment_id 1 from article 9, then do a Get request wher article id 1 isnt there', () => {
+        return request(app).delete('/api/comments/1')
+        .expect(204)
+        .then(() => {
+            return request(app).get('/api/articles/9/comments')
+            .expect(200)
+            .then(({body}) => {
+                body.forEach((comment) => {
+                    expect(comment.comment_id).not.toBe(1)
+                })
+            })
+        })
+    })
+    test('12. DELETE /api/comments/:comment_id: error handle if comment doesnt exists', () => {
+        return request(app).delete('/api/comments/98989898')
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('Resource does not exist')
+        })
+    })
+    test('12. DELETE /api/comments/:comment_id: error handle if comment doesnt exists', () => {
+        return request(app).delete('/api/comments/NotValid')
+        .expect(400)
+        .then(({body}) => {
+            expect(body.problem).toBe("invalid_text_representation")
+        })
+    })
 });
