@@ -15,6 +15,8 @@ const { newsTopics,
         specificUser,
         updateCommentVotes,
         newArticle,
+        newTopic,
+        removeArticle,
      } = require("../controllers/news.controllers")
 
 
@@ -30,11 +32,13 @@ app.get('/api/users/:username', specificUser)
 
 app.post('/api/articles/:article_id/comments', newComment)
 app.post('/api/articles', newArticle)
+app.post('/api/topics', newTopic)
 
 app.patch('/api/articles/:article_id', updateArticleVotes)
 app.patch('/api/comments/:comment_id', updateCommentVotes)
 
 app.delete('/api/comments/:comment_id', removeComment)
+app.delete('/api/articles/:article_id', removeArticle)
 
 
 app.use((err, request, response, next) => {
@@ -51,7 +55,10 @@ app.use((err, request, response, next) => {
     }
     if (err.code === '22003'){
         response.status(404).send({name : err.name, code :err.code,problem: "numeric_value_out_of_range"})
-    }  
+    } 
+    if (err.code === '23505'){
+        response.status(404).send({name : err.name, code :err.code,problem: "unique_violation", detail: err.detail})
+    }   
     else {
         next(err)
     }

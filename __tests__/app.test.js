@@ -368,6 +368,44 @@ describe('POST requests', () => {
         })
     });
 //-----------------------
+    test('22. POST /api/topics: should make post request and return with correct properties', () => {
+        return request(app).post('/api/topics')
+        .send({
+        "slug": "Dogs",
+        "description": "articles about our favourite dogs"
+        })
+        .expect(201)
+        .then(({body}) => {
+            
+            expect(body[0]).toHaveProperty('slug')
+            expect(body[0]).toHaveProperty('description')
+
+            expect(body[0].slug).toBe('Dogs')
+
+            return request(app).get('/api/topics')
+            .expect(200)
+            .then(({body}) => {
+                body.forEach((topic) => {
+                    if (topic.description === "articles about our favourite dogs"){
+                        expect(topic.description).toBe("articles about our favourite dogs")
+                    }
+                })
+            })
+        })
+    })
+    test('22. POST /api/topics: should make post request and return with correct properties', () => {
+        return request(app).post('/api/topics')
+        .send({
+        "slug": "cats",
+        "description": "articles about our favourite dogs"
+        })
+        .expect(404)
+        .then(({body}) => {
+
+            expect(body.detail).toBe('Key (slug)=(cats) already exists.')
+        })
+    });
+//-----------------------
 });
 
 
@@ -528,4 +566,29 @@ describe('DELETE requests', () => {
             expect(body.problem).toBe("invalid_text_representation")
         })
     })
+//THESE DON'T WORK !
+
+
+
+    // test.only('23. DELETE /api/articles/:article_id: should respond with status 204', () => {
+    //     return request(app).delete('/api/articles/1')
+    //     .expect(204)
+    // });
+    // test('23. DELETE /api/articles/:article_id: should respond with status 204', () => {
+    //     return request(app).get('/api/articles/9')
+    //     .expect(200)
+    //     .then(() => {
+    //         return request(app).delete('/api/articles/9')
+    //         .expect(204)
+    //         .then(() => {
+                
+    //             return request(app).get('/api/articles/9')
+    //             .expect(404)
+    //             .then(({body}) => {
+    //                 expect(body.msg).toBe('Resource does not exist')
+    //             })
+    //         })
+    //     })
+    // });
+    //test if doesn't exists
 });

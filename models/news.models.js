@@ -193,6 +193,41 @@ const postArticle = (content) => {
 
 }
 
+const postTopic = (content) =>  {
+
+    if (!content.slug ||!content.description){
+        return Promise.reject({status: 400, msg: 'Content missing to post article'})
+    }
+
+    return db.query(`INSERT INTO topics
+                    (slug, description)
+                    VALUES
+                    ($1, $2)
+                    RETURNING *;`, [content.slug, content.description])
+                    .then(({rows}) => {
+                        return rows
+                    })
+                    .catch((err) => {
+                        return Promise.reject(err)
+                    })
+}
+
+const deleteArticle = (article_id) => {
+    //console.log('check')
+    //console.log(article_id)
+    return db.query(`DELETE FROM articles
+                    WHERE article_id = $1
+                    RETURNING *`, [article_id])
+                    .then(({rows}) => {
+                        console.log('chjejhs')
+                        console.log(rows)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        return Promise.reject(err)
+                    })
+                    
+}
 
 module.exports = {
     allTopics,
@@ -206,4 +241,6 @@ module.exports = {
     getUser,
     changeCommentVote,
     postArticle,
+    postTopic,
+    deleteArticle,
 }
