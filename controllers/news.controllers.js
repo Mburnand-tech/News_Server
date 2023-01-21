@@ -10,7 +10,10 @@ const { allTopics,
     changeVote,
     allUsers,
     selectedArticles,
-    deleteComment } = require('../models/news.models')
+    deleteComment,
+    getUser,
+    changeCommentVote,
+    postArticle } = require('../models/news.models')
 
 
 const endPointInfo = (request, response, next) => {
@@ -97,6 +100,36 @@ const removeComment = (request, response, next) => {
     .catch(next)
 }
 
+const specificUser = (request, response, next) => {
+    getUser(request.params)
+    .then((user) => {
+        response.status(200).send(user)
+    })
+    .catch(next)
+}
+
+const updateCommentVotes = (request, response, next) => {
+        
+    const { comment_id } = request.params
+    const { body } = request
+
+    changeCommentVote(comment_id, body)
+    .then((update) => {
+        response.status(200).send(update)
+    })
+    .catch(next)
+}
+
+const newArticle = (request, response, next) => {
+    postArticle(request.body)
+    .then((article_id) => {
+        return findArticle(article_id)
+    })
+    .then((article) => {
+        response.status(201).send(article)
+    })
+    .catch(next)
+}
 
 module.exports = {
     newsTopics,
@@ -108,4 +141,7 @@ module.exports = {
     platformUsers,
     endPointInfo,
     removeComment,
+    specificUser,
+    updateCommentVotes,
+    newArticle,
 }

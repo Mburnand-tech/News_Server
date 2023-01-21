@@ -138,7 +138,7 @@ describe('GET requests', () => {
          
         }) 
      });
-     test('GET /api/articles (queries): if any query is mis-spelt return with a message', () => {
+    test('GET /api/articles (queries): if any query is mis-spelt return with a message', () => {
         return request(app).get('/api/articles?orderby=Thisisntright')
         .expect(404)
         .then(({body}) => {
@@ -200,7 +200,51 @@ describe('GET requests', () => {
             expect(body).toHaveProperty("GET /api/topics")
             expect(body).toHaveProperty("GET /api/articles")
         })
-    });   
+    });
+//-----------------------------
+//q17
+    test('17. GET /api/users/:username: should return 3 properties; username, name, avatar_url', () => {
+        return request(app).get('/api/users/butter_bridge')
+        .expect(200)
+        .then(({body}) => {
+            expect(body.length).toBe(1)
+
+            expect(body[0]).toHaveProperty('username')
+            expect(body[0]).toHaveProperty('name')
+            expect(body[0]).toHaveProperty('avatar_url')
+
+            expect(body[0].username).toBe('butter_bridge')
+        })
+    })
+    test('17. GET /api/users/:username: should return 3 properties; username, name, avatar_url', () => {
+        return request(app).get('/api/users/lurker')
+        .expect(200)
+        .then(({body}) => {
+            expect(body.length).toBe(1)
+
+            expect(body[0]).toHaveProperty('username')
+            expect(body[0]).toHaveProperty('name')
+            expect(body[0]).toHaveProperty('avatar_url')
+
+            expect(body[0].username).toBe('lurker')
+        })
+    })
+    test('17. GET /api/users/:username: should return error if error msg in user doesnt exist', () => {
+        return request(app).get('/api/users/MattyB')
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('User does not exist')
+        })
+    })
+    test('17. GET /api/users/:username: should return sql error if error msg in user is invalid', () => {
+        return request(app).get('/api/users/20098')
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('User does not exist')
+        })
+    })
+//-----------------------------
+
 });
 
 describe('POST requests', () => {
@@ -267,6 +311,63 @@ describe('POST requests', () => {
             expect(body.msg).toBe( "Please provide content to post")
         })
     });
+//-----------------------
+//q19
+    test('19. POST /api/articles: should have unique url and have all expected properties ', () => {
+        return request(app).post('/api/articles')
+        .send({
+            author: 'lurker',
+            title: 'Where can I buy a cat',
+            body: 'Give me a location!',
+            topic: 'cats',
+            article_img_url: 'http://cdn.akc.org/content/article-body-image/siberian_husky_cute_puppies.jpg'
+        })
+        .expect(201)
+        .then(({body}) => {
+
+            expect(body[0]).toHaveProperty('author')
+            expect(body[0]).toHaveProperty('title')
+            expect(body[0]).toHaveProperty('body')
+            expect(body[0]).toHaveProperty('topic')
+            expect(body[0]).toHaveProperty('article_img_url')
+            expect(body[0]).toHaveProperty('article_id')
+            expect(body[0]).toHaveProperty('votes')
+            expect(body[0]).toHaveProperty('created_at')
+            expect(body[0]).toHaveProperty('comment_count')
+
+            expect(body[0].article_img_url).toBe('http://cdn.akc.org/content/article-body-image/siberian_husky_cute_puppies.jpg')
+        })
+    })
+    test('19. POST /api/articles: should make new topic and have default url ', () => {
+        return request(app).post('/api/articles')
+        .expect(201)
+        .send({
+            author: 'rogersop',
+            title: 'I need to be heard',
+            body: 'Something interesting',
+            topic: 'paper'
+        })
+        .then(({body}) => {
+
+            expect(body[0].author).toBe('rogersop')
+            expect(body[0].topic).toBe('paper')
+            expect(body[0].article_img_url).toBe('https://images.pexels.com/photos/97050/pexels-photo-97050.jpeg?w=700&h=700')
+
+        })
+    })
+    test('19. POST /api/articles: invalid entry should throw error', () => {
+        return request(app).post('/api/articles')
+        .expect(400)
+        .send({
+            author: 'rogersop',
+            body: 'Something interesting',
+            topic: 'paper'
+        })
+        .then(({body}) => {
+            expect(body.msg).toBe('Content missing to post article')
+        })
+    });
+//-----------------------
 });
 
 
@@ -342,6 +443,53 @@ describe('PATCH requests', () => {
             expect(body.problem).toBe("invalid_text_representation")
         })
     });
+//----------------------
+//q18
+    test('18. PATCH /api/comments/:comment_id: should return comments with 5 properties', () => {
+        return request(app).patch('/api/comments/3')
+        .send({ inc_votes : -5 })
+        .then(({body}) => {
+
+            expect(body[0]).toHaveProperty('comment_id')
+            expect(body[0]).toHaveProperty('body')
+            expect(body[0]).toHaveProperty('votes')
+            expect(body[0]).toHaveProperty('author')
+            expect(body[0]).toHaveProperty('article_id')
+            expect(body[0]).toHaveProperty('created_at')
+
+            expect(body[0].votes).toBe(95)
+        })
+    });
+    test('18. PATCH /api/comments/:comment_id: should return comments with 5 properties', () => {
+        return request(app).patch('/api/comments/2')
+        .send({ inc_votes : -1 })
+        .then(({body}) => {
+            expect(body[0].votes).toBe(13)
+
+            return request(app).patch('/api/comments/2')
+            .send({ inc_votes : 5 })
+            .then(({body}) => {
+                expect(body[0].votes).toBe(18)
+            })
+        })
+    });
+    test('18. PATCH /api/comments/:comment_id: should return comments with 5 properties', () => {
+        return request(app).patch('/api/comments/NotaNumber')
+        .send({ inc_votes : -1 })
+        .expect(400)
+        .then(({body}) => {
+            expect(body.problem).toBe("invalid_text_representation")
+        })
+    })
+    test('18. PATCH /api/comments/:comment_id: should return comments with 5 properties', () => {
+        return request(app).patch('/api/comments/1009090909090')
+        .send({ inc_votes : -1 })
+        .expect(404)
+        .then(({body}) => {
+            expect(body.problem).toBe("numeric_value_out_of_range")
+        })
+    });
+//----------------------
 });
 
 

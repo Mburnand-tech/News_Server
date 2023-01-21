@@ -68,7 +68,7 @@ const changeVote = (article_id, voteUpdate) => {
     const updateBy = voteUpdate.inc_votes
 
     return db.query(`UPDATE articles
-                    SET votes = $1
+                    SET votes = votes + $1
                     WHERE article_id = $2
                     RETURNING *;
                     `, [updateBy, article_id]).then(({rows}) => {
@@ -138,6 +138,62 @@ const deleteComment = (comment_id) => {
                     })
 }
 
+const getUser = (username) => {
+
+    return db.query(`SELECT * FROM users
+                    WHERE username=$1`, [username.username])
+                    .then(({rows, rowCount}) => {
+                        if (rowCount === 0){
+                            return Promise.reject({status: 404, msg: 'User does not exist'})
+                        }
+                        return rows
+                    })
+}
+
+const changeCommentVote = (comment_id, voteUpdate) => {
+
+    if (!voteUpdate.inc_votes){
+        return Promise.reject({status: 400, msg: 'Body of request invalid'})
+    }
+
+    const updateBy = voteUpdate.inc_votes
+
+    return db.query(`UPDATE comments
+                    SET votes = votes + $1
+                    WHERE comment_id = $2
+                    RETURNING *;
+                    `, [updateBy, comment_id]).then(({rows, rowCount}) => {
+                    
+                        if (rowCount === 0){
+                            return Promise.reject({status: 404, msg: 'User does not exist'})
+                        }
+                        return rows
+                    })
+}
+
+const postArticle = (content) => {
+
+    if (!content.author ||!content.title ||!content.body ||!content.topic ){
+        return Promise.reject({status: 400, msg: 'Content missing to post article'})
+    }
+
+    let url = content.article_img_url ? content.article_img_url : 'https://images.pexels.com/photos/97050/pexels-photo-97050.jpeg?w=700&h=700'
+    return db.query(`INSERT INTO articles
+                    (author, title, body, topic, article_img_url)
+                    VALUES
+                    ($1, $2, $3, $4, $5)
+                    RETURNING article_id`, [content.author, content.title, content.body, content.topic, url])
+                    .then(({rows}) => {
+                        return rows[0].article_id
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        return Promise.reject(err)
+                    })
+
+}
+
+
 module.exports = {
     allTopics,
     findArticle,
@@ -147,4 +203,7 @@ module.exports = {
     selectedArticles,
     allUsers,
     deleteComment,
+    getUser,
+    changeCommentVote,
+    postArticle,
 }
