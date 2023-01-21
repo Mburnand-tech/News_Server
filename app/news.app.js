@@ -12,6 +12,9 @@ const { newsTopics,
         platformUsers,
         endPointInfo,
         removeComment,
+        specificUser,
+        updateCommentVotes,
+        newArticle,
      } = require("../controllers/news.controllers")
 
 
@@ -22,11 +25,14 @@ app.get('/api/articles', newsArticles)
 app.get(`/api/articles/:article_id`, specficNewsArticle)
 app.get('/api/articles/:article_id/comments', allCommentsById)
 app.get('/api/users', platformUsers)
-app.get('/api', endPointInfo) 
+app.get('/api', endPointInfo)
+app.get('/api/users/:username', specificUser)
 
 app.post('/api/articles/:article_id/comments', newComment)
+app.post('/api/articles', newArticle)
 
 app.patch('/api/articles/:article_id', updateArticleVotes)
+app.patch('/api/comments/:comment_id', updateCommentVotes)
 
 app.delete('/api/comments/:comment_id', removeComment)
 
@@ -42,7 +48,10 @@ app.use((err, request, response, next) => {
     } 
     if (err.code === '42601'){
         response.status(404).send({name : err.name, code :err.code,problem: "syntax_error"})
-    } 
+    }
+    if (err.code === '22003'){
+        response.status(404).send({name : err.name, code :err.code,problem: "numeric_value_out_of_range"})
+    }  
     else {
         next(err)
     }
@@ -56,7 +65,7 @@ app.use((err, request, response, next) => {
     if (err.status === 400){     
         response.status(400).send(err)
     }
-    if (err.status === 404){     
+    if (err.status === 404){    
         response.status(404).send(err)
     }
 })
