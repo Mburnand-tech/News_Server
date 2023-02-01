@@ -79,6 +79,4 @@ app.get('/api/*', (request, response) => {
 
 
 
-module.exports = {
-    app,
-}
+module.exports = app
