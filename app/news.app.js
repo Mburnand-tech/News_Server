@@ -1,7 +1,7 @@
 const { response, request } = require('express')
 const express = require('express')
+const cors = require('cors')
 const app = express()
-
 
 const { newsTopics,
         newsArticles,
@@ -17,7 +17,7 @@ const { newsTopics,
         newArticle,
      } = require("../controllers/news.controllers")
 
-
+app.use(cors())
 app.use(express.json())
 
 app.get('/api/topics', newsTopics)
