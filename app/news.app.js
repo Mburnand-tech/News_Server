@@ -1,6 +1,7 @@
 const { response, request } = require('express')
 const express = require('express')
 const cors = require('cors')
+const bodyParser = require('body-parser')
 const app = express()
 
 const { newsTopics,
@@ -18,6 +19,7 @@ const { newsTopics,
      } = require("../controllers/news.controllers")
 
 app.use(cors())
+app.use(bodyParser.json({ type: 'application/*+json' }))
 app.use(express.json())
 
 app.get('/api/topics', newsTopics)
