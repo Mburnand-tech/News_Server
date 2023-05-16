@@ -12,15 +12,15 @@ The API is hosted via Render and can be viewed [here](https://nc-news-matts-pers
 
 Users can query the Postgres database using the following implemented endpoints:
 
-### `GET /api`
+**`GET /api`**
 
 Serves an endpoint glossary, providing all implemented methods with their available queries, syntax and example responses/inputs.
 
-### `GET /api/users`
+**`GET /api/users`**
 
 Serves an array of all available users, including their username, nickname and avatar_url.
 
-### **`GET /api/topics`**
+**`GET /api/topics`**
 
 Serves an array of all available topics, including their descriptions.
 
@@ -30,23 +30,23 @@ Serves an array of all available articles, by default sorted in descending order
 
 Accepts queries for filtering results by the author name and/or topic name, in addition to queries for choosing the sort category and sort order.
 
-### **`GET /api/articles/:article_id`**
+**`GET /api/articles/:article_id`**
 
 Serves the article associated with provided article ID and all relevant article data.
 
 _(also includes the body text from the article, this is not returned by the `GET /api/articles` endpoint to avoid clutter)_
 
-### **`GET /api/articles/:article_id/comments`**
+**`GET /api/articles/:article_id/comments`**
 
 Serves all available comments associated with provided article ID, and all relevant comment data.
 
 
-### **`GET /api/users/:username`**
+**`GET /api/users/:username`**
 "description": "serves an array of the specific user associated with the username"
 "queries": [], "exampleResponse":[{"username":"grumpy19","name":"Paul Grump","avatar_url":"https://vignette.wikia.nocookie.net/mrmen/images/7/78/Mr-Grumpy-3A.PNG/revision/latest?cb=20170707233013"}]
 
 
-### **`POST /api/articles/:article_id`**
+**`POST /api/articles/:article_id`**
 
 "description":"posts a comment and responds with an object of the posted comment","queries":[],"exampleResponse":{"postedComment":{"comment_id":19,"body":"I love this article!","article_id":1,"author":"butter_bridge","votes":0,"created_at":"2023-01-20T14:58:50.086Z"}}
               
@@ -54,7 +54,7 @@ Creates a new comment with provided article ID assigned to it, uses JSON object 
 
 Serves newly created comment.
 
-### **`POST /api/articles`**
+**`POST /api/articles`**
 "description": "", "queries": [], "exampleResponse":{"article_id": 17, "votes": 3, "created_at": "2020-07-09T20:11:00.000Z", "comment_count": 14}
 
 
@@ -62,18 +62,18 @@ Serves newly created comment.
 
 
 
-### **`PATCH /api/articles/:article_id`**
+**`PATCH /api/articles/:article_id`**
 
 Allows incrementing/decrementing of the votes property of the article associated with provided article ID, using the value provided by JSON object in request body.
 
 Serves modified article with new votes value.
 
 
-### `PATCH /api/comments/:comment_id`
+**`PATCH /api/comments/:comment_id`**
 "description": "", "queries": [], "exampleResponse":{}
 
 
-### **`DELETE /api/comments/:comment_id`**
+**`DELETE /api/comments/:comment_id`**
 
 Deletes the comment and all relevant data associated with the provided comment ID.
 
