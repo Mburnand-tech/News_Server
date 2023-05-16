@@ -1,7 +1,5 @@
 # Northcoders News API
 
-[api list](https://nc-news-matts-personal-project.onrender.com/api)
-
 ## **Summary**
 
 This repository contains an example of a RESTful API that was created as part of a one-week solo sprint while I was a student at Northcoders. A sister project to [Front-End](https://github.com/Mburnand-tech/NC_News).
