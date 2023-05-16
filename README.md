@@ -12,11 +12,11 @@ The API is hosted via Render and can be viewed [here](https://nc-news-matts-pers
 
 Users can query the Postgres database using the following implemented endpoints:
 
-### **`GET /api`**
+### `GET /api`
 
 Serves an endpoint glossary, providing all implemented methods with their available queries, syntax and example responses/inputs.
 
-### **`GET /api/users`**
+### `GET /api/users`
 
 Serves an array of all available users, including their username, nickname and avatar_url.
 
