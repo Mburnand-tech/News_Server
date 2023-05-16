@@ -46,8 +46,6 @@ Serves all available comments associated with provided article ID, and all relev
 "queries": [], "exampleResponse":[{"username":"grumpy19","name":"Paul Grump","avatar_url":"https://vignette.wikia.nocookie.net/mrmen/images/7/78/Mr-Grumpy-3A.PNG/revision/latest?cb=20170707233013"}]
 
 
-
-
 ### **`POST /api/articles/:article_id` **
 "description":"posts a comment and responds with an object of the posted comment","queries":[],"exampleResponse":{"postedComment":{"comment_id":19,"body":"I love this article!","article_id":1,"author":"butter_bridge","votes":0,"created_at":"2023-01-20T14:58:50.086Z"}}
               
