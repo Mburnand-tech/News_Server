@@ -41,7 +41,7 @@ _(also includes the body text from the article, this is not returned by the `GET
 Serves all available comments associated with provided article ID, and all relevant comment data.
 
 
-### ** `GET /api/users/:username` **
+### **`GET /api/users/:username`**
 "description": "serves an array of the specific user associated with the username"
 "queries": [], "exampleResponse":[{"username":"grumpy19","name":"Paul Grump","avatar_url":"https://vignette.wikia.nocookie.net/mrmen/images/7/78/Mr-Grumpy-3A.PNG/revision/latest?cb=20170707233013"}]
 
