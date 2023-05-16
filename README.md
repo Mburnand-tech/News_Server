@@ -82,13 +82,6 @@ Deletes the comment and all relevant data associated with the provided comment I
 
 For more specific information, please see `endpoints.json` or use the `GET /api` endpoint
 
----
-
-## **Hosted version**
-
-### **You can try out a live production version of this app, using Swagger UI by [clicking here](https://abi-nc-news.onrender.com/api-docs).**
-
----
 
 ## **Setup**
 
