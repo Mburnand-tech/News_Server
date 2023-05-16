@@ -12,7 +12,7 @@ The API is hosted via Render and can be viewed [here](https://nc-news-matts-pers
 
 Users can query the Postgres database using the following implemented endpoints:
 
-- **`GET /api`** - Serves an endpoint glossary, providing all implemented methods with their available queries, syntax and example responses/inputs.
+- [**`GET /api`**](https://nc-news-matts-personal-project.onrender.com/api) - Serves an endpoint glossary, providing all implemented methods with their available queries, syntax and example responses/inputs.
 - **`GET /api/users`** - Serves an array of all available users, including their username, nickname and avatar_url.
 - **`GET /api/topics`** - Serves an array of all available topics, including their descriptions.
 - **`GET /api/articles`** - Serves an array of all available articles, by default sorted in descending order by creation date. Accepts queries for filtering results by the author name, topic name, article title, amount of votes, amount of comments and creation date. Additionally being able to sort by in Ascending/Descending order.
