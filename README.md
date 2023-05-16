@@ -69,7 +69,7 @@ Allows incrementing/decrementing of the votes property of the article associated
 Serves modified article with new votes value.
 
 
-### `PATCH /api/comments/:comment_id`:
+### `PATCH /api/comments/:comment_id`
 "description": "", "queries": [], "exampleResponse":{}
 
 
