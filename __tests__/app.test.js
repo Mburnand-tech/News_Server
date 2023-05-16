@@ -16,11 +16,7 @@ afterAll(() => {
     return db.end()
 })
 
-test('should ', () => {
-    expect(1+1).toEqual(2)
-});
 
-/*
 describe('GET requests', () => {
     test('should return 404 for invalid end point', () => {
         return request(app).get('/api/NotaValidEndpoint')
@@ -537,4 +533,3 @@ describe('DELETE requests', () => {
         })
     })
 });
-*/
