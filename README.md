@@ -28,7 +28,10 @@ Users can query the Postgres database using the following implemented endpoints:
 - **`PATCH /api/comments/:comment_id`** - Creates a new comment with provided comment ID assigned to it, uses JSON object in request body for username and body properties, automatically creates values for remaining properties. Serves newly created comment.
 
 
-- **`DELETE /api/comments/:comment_id`** - Deletes the comment and all relevant data associated with the provided comment ID. For more specific information, please see `endpoints.json` or use the `GET /api` endpoint
+- **`DELETE /api/comments/:comment_id`** - Deletes the comment and all relevant data associated with the provided comment ID. 
+
+
+For more specific information, please see `endpoints.json` or use the `GET /api` endpoint
 
 
 ## **Setup**
