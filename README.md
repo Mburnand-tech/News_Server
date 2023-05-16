@@ -2,7 +2,7 @@
 
 ## **Summary**
 
-This repository contains an example of a RESTful API that was created as part of a one-week solo sprint while I was a student at Northcoders. A sister project to [Front-End](https://github.com/Mburnand-tech/NC_News).
+This repository contains an example of a RESTful API that was created as part of a one-week solo sprint while I was a student at Northcoders. A sister project to its Front-End [NC_News](https://github.com/Mburnand-tech/NC_News).
 
 It has been designed to provide the functionality for a Reddit-style news aggregation and comments board. The API provides endpoints for managing articles, users, likes and comments. The project demonstrates my proficiency in developing and launching a RESTful API using JavaScript, Node.js, Express.js, and PostgreSQL. It showcases my ability to implement a functional and user-friendly system for managing content.
 
