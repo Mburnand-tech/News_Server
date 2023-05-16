@@ -20,12 +20,12 @@ const { newsTopics,
 app.use(cors())
 app.use(express.json())
 
+app.get('/api', endPointInfo)
 app.get('/api/topics', newsTopics)
 app.get('/api/articles', newsArticles)
 app.get(`/api/articles/:article_id`, specficNewsArticle)
 app.get('/api/articles/:article_id/comments', allCommentsById)
 app.get('/api/users', platformUsers)
-app.get('/api', endPointInfo)
 app.get('/api/users/:username', specificUser)
 
 app.post('/api/articles/:article_id/comments', newComment)
