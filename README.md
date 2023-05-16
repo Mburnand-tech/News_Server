@@ -43,13 +43,6 @@ For more specific information, please see `endpoints.json` or use the `GET /api`
 
 ### **Cloning repository**
 
-Using shell, create a directory where you would like to store the project, then change directory to it. _(Optional)_
-
-```bash
-$ mkdir project_folder
-$ cd project_folder
-```
-
 Clone with:
 
 ```bash
