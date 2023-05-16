@@ -24,7 +24,7 @@ Serves an array of all available users, including their username, nickname and a
 
 Serves an array of all available topics, including their descriptions.
 
-### **`GET /api/articles`**
+**`GET /api/articles`**
 
 Serves an array of all available articles, by default sorted in descending order by creation date.
 
