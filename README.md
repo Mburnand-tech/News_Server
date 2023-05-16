@@ -7,7 +7,6 @@ This repository contains an example of a RESTful API that was created as part of
 It has been designed to provide the functionality for a Reddit-style news aggregation and comments board. The API provides endpoints for managing articles, users, likes and comments. The project demonstrates my proficiency in developing and launching a RESTful API using JavaScript, Node.js, Express.js, and PostgreSQL. It showcases my ability to implement a functional and user-friendly system for managing content.
 
 The API is hosted via Render and can be viewed [here](https://nc-news-matts-personal-project.onrender.com/api).
----
 
 ## **API endpoints**
 
