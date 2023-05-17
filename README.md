@@ -52,7 +52,7 @@ $ git clone https://github.com/Mburnand-tech/News_Server.git
 And finally, ensure you are in the correct directory by running:
 
 ```bash
-$ cd NC-News
+$ cd News_Server
 ```
 
 ### **Installing dependencies**
