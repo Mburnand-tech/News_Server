@@ -46,7 +46,7 @@ For more specific information, please see `endpoints.json` or use the [`GET /api
 Clone with:
 
 ```bash
-$ git clone https://github.com/abigail-a-lee/NC-News
+$ git clone https://github.com/Mburnand-tech/NC-News
 ```
 
 And finally, ensure you are in the correct directory by running:
