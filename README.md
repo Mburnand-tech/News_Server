@@ -31,7 +31,7 @@ Users can query the Postgres database using the following implemented endpoints:
 - **`DELETE /api/comments/:comment_id`** - Deletes the comment and all relevant data associated with the provided comment ID. 
 
 
-For more specific information, please see `endpoints.json` or use the `GET /api` endpoint
+For more specific information, please see `endpoints.json` or use the [`GET /api`](https://nc-news-matts-personal-project.onrender.com/api) endpoint
 
 
 ## **Setup**
