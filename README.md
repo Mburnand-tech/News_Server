@@ -107,7 +107,7 @@ $ npm test
 
 ---
 
-## **Dependencies**
+## :scroll: **Dependencies**
 
 This project requires the following Node.JS packages:
 
