@@ -18,7 +18,7 @@ Users can query the Postgres database using the following implemented endpoints:
 - [**`GET /api/articles`**](https://nc-news-matts-personal-project.onrender.com/api/articles) - Serves an array of all available articles, by default sorted in descending order by creation date. Accepts queries for filtering results by the author name, topic name, article title, amount of votes, amount of comments and creation date. Additionally being able to sort by in Ascending/Descending order.
 - [**`GET /api/articles/:article_id`**](https://nc-news-matts-personal-project.onrender.com/api/articles/1) - Serves the article associated with provided article ID and all relevant article data. (also includes the body text from the article)
 - [**`GET /api/articles/:article_id/comments`**](https://nc-news-matts-personal-project.onrender.com/api/1/comments) - Serves comment data associated with the provided article ID.
-- [**`GET /api/users/:username`**](https://nc-news-matts-personal-project.onrender.com/api/users/grumpy19) - Serves information on a specific user associated with the username. Return Error Message if user does not exist.
+- [**`GET /api/users/:username`**](https://nc-news-matts-personal-project.onrender.com/api/users/grumpy19) - Serves information on a specific user associated with the username. Return Error Message if user invalid.
 
 - **`POST /api/articles/:article_id`** - Posts a comment and responds with the posted comment.
 - **`POST /api/articles`** - Posts a article and responds with the posted article.
