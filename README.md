@@ -8,7 +8,7 @@ It has been designed to provide the functionality for a Reddit-style news aggreg
 
 The API is hosted via Render and can be viewed [here](https://nc-news-matts-personal-project.onrender.com/api).
 
-## **API endpoints**
+## :electric_plug: **API endpoints**
 
 Users can query the Postgres database using the following implemented endpoints:
 
