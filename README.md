@@ -24,7 +24,7 @@ Users can query the Postgres database using the following implemented endpoints:
 - **`POST /api/articles`** - Posts a article and responds with the posted article.
 
 
-- **`PATCH /api/articles/:article_id`** - Allows incrementing/decrementing of the votes property of the article associated with provided article ID, using the value provided by JSON object in request body. Serves modified article with new votes value.
+- **`PATCH /api/articles/:article_id`** - Allows incrementing/decrementing of the votes property of the article associated with provided article ID, using the votes value provided by JSON object in request body. Serves modified article with new votes value.
 - **`PATCH /api/comments/:comment_id`** - Creates a new comment with provided comment ID assigned to it, uses JSON object in request body for username and body properties, automatically creates values for remaining properties. Serves newly created comment.
 
 
