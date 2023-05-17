@@ -10,7 +10,7 @@ The API is hosted via Render and can be viewed [here](https://nc-news-matts-pers
 
 ## :electric_plug: **API endpoints**
 
-Users can query the Postgres database using the following implemented endpoints:
+Users can query the Postgres database using the following endpoints:
 
 - [**`GET /api`**](https://nc-news-matts-personal-project.onrender.com/api) - Serves an endpoint glossary, providing all implemented methods with their available queries, syntax and example responses/inputs.
 - [**`GET /api/users`**](https://nc-news-matts-personal-project.onrender.com/api/users) - Serves an array of all available users, including their username, nickname and avatar_url.
