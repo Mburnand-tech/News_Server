@@ -34,7 +34,7 @@ Users can query the Postgres database using the following implemented endpoints:
 For more specific information, please see `endpoints.json` or use the [`GET /api`](https://nc-news-matts-personal-project.onrender.com/api) endpoint
 
 
-## **Setup**
+## :computer: **Setup**
 
 ### **Requirements**
 
