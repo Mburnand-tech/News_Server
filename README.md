@@ -12,13 +12,13 @@ The API is hosted via Render and can be viewed [here](https://nc-news-matts-pers
 
 Users can query the Postgres database using the following endpoints:
 
-- [**`GET /api`**](https://nc-news-matts-personal-project.onrender.com/api) - Serves an endpoint glossary, providing all implemented methods with their available queries, syntax and example responses/inputs.
+- [**`GET /api`**](https://nc-news-matts-personal-project.onrender.com/api) - Serves as an endpoint glossary, providing all implemented methods with their available queries, syntax and example responses/inputs.
 - [**`GET /api/users`**](https://nc-news-matts-personal-project.onrender.com/api/users) - Serves an array of all available users, including their username, nickname and avatar_url.
 - [**`GET /api/topics`**](https://nc-news-matts-personal-project.onrender.com/api/topics)- Serves an array of all available topics, including their descriptions.
 - [**`GET /api/articles`**](https://nc-news-matts-personal-project.onrender.com/api/articles) - Serves an array of all available articles, by default sorted in descending order by creation date. Accepts queries for filtering results by the author name, topic name, article title, amount of votes, amount of comments and creation date. Able to sort results into ascending/descending order.
 - [**`GET /api/articles/:article_id`**](https://nc-news-matts-personal-project.onrender.com/api/articles/1) - Serves the article associated with provided article ID and all relevant article data, including the body text from the article.
 - [**`GET /api/articles/:article_id/comments`**](https://nc-news-matts-personal-project.onrender.com/api/1/comments) - Serves comment data associated with the provided article ID.
-- [**`GET /api/users/:username`**](https://nc-news-matts-personal-project.onrender.com/api/users/grumpy19) - Serves information on a specific user associated with the username. Return Error Message if user is invalid.
+- [**`GET /api/users/:username`**](https://nc-news-matts-personal-project.onrender.com/api/users/grumpy19) - Serves information on a specific user associated with the username. Return Error Message if the user is invalid.
 
 - **`POST /api/articles/:article_id`** - Posts a comment and responds with the posted comment.
 - **`POST /api/articles`** - Posts an article and responds with the posted article.
