@@ -17,7 +17,19 @@ const { newsTopics,
         newArticle,
      } = require("../controllers/news.controllers")
 
-app.use(cors())
+app.use((req, res, next) => {
+const now = new Date().toISOString();
+console.log(`[${now}] ${req.method} ${req.url} from Matt`);
+next(); // Continue to the next middleware or route handler
+});
+
+app.use(cors({
+    origin: 'http://ec2-18-130-187-9.eu-west-2.compute.amazonaws.com', // or '*' for all domains
+    methods: 'GET, POST, PUT, DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true
+}))
+
 app.use(express.json())
 
 app.get('/api', endPointInfo)
